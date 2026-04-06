@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elías – Brujo Blanco | Maestro Chamán</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dim: #7a5c1e;
+    --deep: #0a0508;
+    --dark: #120c10;
+    --mid: #1e1220;
+    --accent: #8b1a3a;
+    --accent2: #2a6b5e;
+    --smoke: rgba(201,168,76,0.07);
+    --text: #e8d9b5;
+    --text-dim: #9e8c6a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── PARTICLES BG ── */
+  #particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.2; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem 4rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,26,58,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(42,107,94,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 100% 100% at 50% 50%, #120c10 40%, #0a0508 100%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='0.3' opacity='0.15'%3E%3Ccircle cx='30' cy='30' r='25'/%3E%3Ccircle cx='30' cy='30' r='15'/%3E%3Cline x1='5' y1='30' x2='55' y2='30'/%3E%3Cline x1='30' y1='5' x2='30' y2='55'/%3E%3Cline x1='12' y1='12' x2='48' y2='48'/%3E%3Cline x1='48' y1='12' x2='12' y2='48'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-inner { position: relative; z-index: 1; max-width: 700px; }
+
+  .sigil {
+    width: 90px; height: 90px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    animation: spin-slow 20s linear infinite;
+  }
+  .sigil svg { width: 100%; height: 100%; }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 0.35rem 1.2rem;
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+    background: rgba(201,168,76,0.06);
+    animation: fadeIn 1s ease both;
+  }
+
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.2rem, 8vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    background: linear-gradient(160deg, #f0d080 0%, #c9a84c 40%, #8b5e1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 1.2s ease 0.2s both;
+  }
+
+  .subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    margin-bottom: 1.8rem;
+    animation: fadeIn 1.2s ease 0.4s both;
+  }
+
+  .hero-desc {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-style: italic;
+    color: var(--text-dim);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    animation: fadeIn 1.2s ease 0.6s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CTA BUTTON ── */
+  .cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(37,211,102,0.4), 0 0 60px rgba(37,211,102,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: fadeIn 1.2s ease 0.8s both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 40px rgba(37,211,102,0.6), 0 0 80px rgba(37,211,102,0.25);
+  }
+  .cta:active { transform: scale(0.98); }
+
+  .cta svg { flex-shrink: 0; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    text-align: center; padding: 2rem 0; position: relative; z-index: 1;
+  }
+  .divider span {
+    font-size: 1.4rem; color: var(--gold-dim);
+    letter-spacing: 0.5em;
+  }
+
+  /* ── SERVICES ── */
+  .section {
+    position: relative; z-index: 1;
+    padding: 4rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .section-sub {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-dim);
+    margin-bottom: 3rem;
+    font-size: 1.05rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .service-card {
+    background: linear-gradient(145deg, rgba(30,18,32,0.9), rgba(18,12,16,0.95));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 6px;
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(201,168,76,0.5);
+    box-shadow: 0 10px 40px rgba(201,168,76,0.1);
+  }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: drop-shadow(0 0 10px rgba(201,168,76,0.5));
+  }
+  .service-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+  .service-desc {
+    font-size: 0.93rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ── BAND ── */
+  .band {
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, rgba(139,26,58,0.3) 0%, rgba(42,107,94,0.2) 100%);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+  }
+
+  .band-quote {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--gold-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
+  }
+
+  /* ── WHY ── */
+  .why-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .why-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 1.2rem;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 4px;
+  }
+  .why-item .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+  .why-item p { font-size: 0.95rem; color: var(--text-dim); line-height: 1.5; }
+  .why-item strong { font-family: 'Cinzel', serif; color: var(--text); font-size: 0.9rem; display: block; margin-bottom: 0.3rem; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .testi {
+    background: rgba(18,12,16,0.8);
+    border-left: 3px solid var(--gold-dim);
+    padding: 1.4rem 1.2rem;
+    border-radius: 0 4px 4px 0;
+  }
+  .testi p { font-style: italic; color: var(--text-dim); line-height: 1.6; margin-bottom: 0.8rem; font-size: 0.95rem; }
+  .testi .author { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold-dim); letter-spacing: 0.1em; }
+
+  /* ── STARS ── */
+  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+
+  /* ── CONTACT SECTION ── */
+  .contact-section {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 5rem 1.5rem;
+    background: radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,26,58,0.2) 0%, transparent 70%);
+  }
+  .contact-section h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .contact-section p {
+    font-style: italic; color: var(--text-dim); max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.7;
+  }
+
+  /* ── STICKY CTA ── */
+  .sticky-cta {
+    position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+    z-index: 999;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    padding: 0.85rem 1.6rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.5), 0 0 0 0 rgba(37,211,102,0.5);
+    white-space: nowrap;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.5), 0 0 0 0 rgba(37,211,102,0.4); }
+    50% { box-shadow: 0 4px 30px rgba(37,211,102,0.7), 0 0 0 8px rgba(37,211,102,0); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 2rem 1rem 5rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  footer p { font-size: 0.8rem; color: var(--text-dim); letter-spacing: 0.05em; }
+
+  /* ── ORNAMENT ── */
+  .ornament {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.6em;
+    padding: 1rem 0;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 400px) {
+    .sticky-cta { font-size: 0.78rem; padding: 0.75rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="sigil">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="sg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f0d080"/>
+            <stop offset="100%" stop-color="#7a5c1e"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="47" fill="none" stroke="url(#sg)" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="35" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+        <!-- Star of Solomon -->
+        <polygon points="50,10 61,37 90,37 67,56 76,83 50,65 24,83 33,56 10,37 39,37" fill="none" stroke="url(#sg)" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="6" fill="#c9a84c" opacity="0.8"/>
+        <!-- Ticks -->
+        <line x1="50" y1="3" x2="50" y2="10" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="50" y1="90" x2="50" y2="97" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="3" y1="50" x2="10" y2="50" stroke="#c9a84c" stroke-width="1"/>
+        <line x1="90" y1="50" x2="97" y2="50" stroke="#c9a84c" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="badge">✦ Magia Ancestral ✦</div>
+    <h1>Elías</h1>
+    <p class="subtitle">Brujo Blanco · Maestro Chamán</p>
+    <p class="hero-desc">
+      Treinta años canalizando las fuerzas del universo para sanar, unir y transformar destinos.
+      La luz guía cada ritual, el amor es la única ley.
+    </p>
+
+    <a class="cta" href="https://wa.me/51956842389?text=Hola%20Maestro%20El%C3%ADas%2C%20quiero%20agendar%20mi%20cita" target="_blank" rel="noopener">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Agenda tu Cita Ahora
+    </a>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section class="section reveal">
+  <h2 class="section-title">Servicios Espirituales</h2>
+  <p class="section-sub">Cada trabajo es único, realizado con dedicación y energía pura</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">🔮</span>
+      <h3 class="service-name">Amarres de Amor</h3>
+      <p class="service-desc">Rituales de vinculación para reunir almas separadas, fortalecer relaciones y despertar el amor verdadero.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌟</span>
+      <h3 class="service-name">Suerte y Destino</h3>
+      <p class="service-desc">Limpiezas energéticas, apertura de caminos y rituales para atraer abundancia, prosperidad y oportunidades.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🃏</span>
+      <h3 class="service-name">Lectura del Tarot</h3>
+      <p class="service-desc">Consultas profundas con las cartas del tarot para revelar lo que el universo tiene preparado para ti.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🕯️</span>
+      <h3 class="service-name">Limpias Espirituales</h3>
+      <p class="service-desc">Eliminación de energías negativas, envidias y maleficios que bloquean tu bienestar y tu avance.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💼</span>
+      <h3 class="service-name">Trabajo y Negocios</h3>
+      <p class="service-desc">Rituales para atraer clientes, cerrar tratos, estabilizar tu economía y hacer florecer tu empresa.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🛡️</span>
+      <h3 class="service-name">Protección Espiritual</h3>
+      <p class="service-desc">Escudos energéticos para protegerte a ti y a tu familia de personas que desean tu mal.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ornament">✦ ✦ ✦</div>
+
+<!-- ══ BAND ══ -->
+<div class="band reveal">
+  <p class="band-quote">"La magia blanca no dobla la voluntad ajena, abre el corazón del universo para que el amor fluya naturalmente"</p>
+  <a class="cta" href="https://wa.me/51956842389?text=Hola%20Maestro%20El%C3%ADas%2C%20necesito%20ayuda%20espiritual" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    Consultar por WhatsApp
+  </a>
+</div>
+
+<!-- ══ WHY ══ -->
+<section class="section reveal">
+  <h2 class="section-title">¿Por qué el Maestro Elías?</h2>
+  <p class="section-sub">Confianza, discreción y resultados verificables</p>
+
+  <div class="why-list">
+    <div class="why-item">
+      <span class="icon">⚡</span>
+      <div>
+        <strong>Resultados Rápidos</strong>
+        <p>Trabajos efectivos con resultados visibles en el menor tiempo posible.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <span class="icon">🤫</span>
+      <div>
+        <strong>Total Discreción</strong>
+        <p>Absoluta confidencialidad. Tu caso es privado y sagrado.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <span class="icon">☀️</span>
+      <div>
+        <strong>Solo Magia Blanca</strong>
+        <p>Trabajo limpio, sin daño a terceros, alineado con la luz universal.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <span class="icon">📞</span>
+      <div>
+        <strong>Atención Personalizada</strong>
+        <p>Cada consulta es única. Te escucho, te entiendo y diseño tu ritual.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <span class="icon">🌍</span>
+      <div>
+        <strong>Trabajo a Distancia</strong>
+        <p>No importa donde estés. Los rituales alcanzan cualquier rincón del mundo.</p>
+      </div>
+    </div>
+    <div class="why-item">
+      <span class="icon">🏆</span>
+      <div>
+        <strong>30 Años de Experiencia</strong>
+        <p>Décadas canalizando las energías del cosmos con sabiduría ancestral.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="section reveal">
+  <h2 class="section-title">Lo que Dicen los Consultantes</h2>
+  <p class="section-sub">Testimonios reales de personas que transformaron su vida</p>
+
+  <div class="testimonials">
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <p>"No creía en estas cosas, pero estaba desesperada. A los 21 días mi pareja volvió y nunca habíamos estado mejor. Gracias, Maestro Elías."</p>
+      <span class="author">— M. Rosario, Lima</span>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <p>"Me hizo una limpia y lectura de tarot. Todo lo que me dijo se fue cumpliendo. Encontré trabajo en dos semanas y la envidia en mi familia desapareció."</p>
+      <span class="author">— Carlos H., Huánuco</span>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <p>"El amarre funcionó perfectamente. Mi negocio también mejoró después del ritual de abundancia. Lo recomiendo al 100%."</p>
+      <span class="author">— Lucía F., Pucallpa</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FINAL CTA ══ -->
+<section class="contact-section reveal">
+  <h2>Tu Destino Puede Cambiar Hoy</h2>
+  <p>Da el primer paso. Una consulta confidencial es todo lo que necesitas para que el universo trabaje a tu favor.</p>
+  <a class="cta" href="https://wa.me/51956842389?text=Hola%20Maestro%20El%C3%ADas%2C%20deseo%20agendar%20mi%20cita" target="_blank" rel="noopener">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    📲 956 842 389 — Agenda tu Cita
+  </a>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>© 2025 Maestro Elías · Brujo Blanco · Magia de Luz · Todos los derechos reservados</p>
+  <p style="margin-top:0.5rem;">🔮 Consultas confidenciales · Resultados garantizados</p>
+</footer>
+
+<!-- ══ STICKY CTA ══ -->
+<a class="sticky-cta" href="https://wa.me/51956842389?text=Hola%20Maestro%20El%C3%ADas%2C%20quiero%20agendar%20mi%20cita" target="_blank" rel="noopener">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+  Agenda tu cita — WhatsApp
+</a>
+
+<script>
+  // Particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    container.appendChild(p);
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+</script>
+</body>
+</html>
