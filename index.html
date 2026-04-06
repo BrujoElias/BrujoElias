@@ -398,12 +398,10 @@
     width: 260px;
     flex-shrink: 0;
   }
-  /* Marco decorativo dorado */
   .video-frame {
     position: relative;
     border-radius: 18px;
     overflow: hidden;
-    /* Borde dorado con gradiente */
     padding: 3px;
     background: linear-gradient(145deg, #f0d080, #7a5c1e, #c9a84c, #f0d080);
     box-shadow:
@@ -411,16 +409,13 @@
       0 0 60px rgba(201,168,76,0.15),
       inset 0 0 20px rgba(0,0,0,0.5);
     transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
   }
   .video-frame:hover {
     transform: translateY(-6px) scale(1.02);
-    box-shadow:
-      0 0 50px rgba(201,168,76,0.6),
-      0 0 100px rgba(201,168,76,0.25);
+    box-shadow: 0 0 50px rgba(201,168,76,0.6), 0 0 100px rgba(201,168,76,0.25);
   }
-  /* Esquinas decorativas */
-  .video-frame::before,
-  .video-frame::after {
+  .video-frame::before, .video-frame::after {
     content: '✦';
     position: absolute;
     font-size: 1rem;
@@ -428,6 +423,7 @@
     z-index: 3;
     line-height: 1;
     filter: drop-shadow(0 0 6px rgba(201,168,76,0.8));
+    pointer-events: none;
   }
   .video-frame::before { top: 8px; left: 10px; }
   .video-frame::after  { bottom: 8px; right: 10px; }
@@ -438,11 +434,37 @@
     aspect-ratio: 9/16;
     background: #0a0508;
   }
-  .video-inner iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
+  .video-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
     display: block;
+    transition: transform 0.4s, filter 0.4s;
+    filter: brightness(0.8);
+  }
+  .video-frame:hover .video-inner img {
+    transform: scale(1.05);
+    filter: brightness(0.6);
+  }
+  /* Play overlay */
+  .play-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+  }
+  .play-btn {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(201,168,76,0.95), rgba(122,92,30,0.95));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    color: #0a0508;
+    box-shadow: 0 0 30px rgba(201,168,76,0.7), 0 0 0 8px rgba(201,168,76,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding-left: 4px;
+  }
+  .video-frame:hover .play-btn {
+    transform: scale(1.15);
+    box-shadow: 0 0 50px rgba(201,168,76,0.9), 0 0 0 14px rgba(201,168,76,0.1);
   }
   .video-label {
     text-align: center;
@@ -453,9 +475,62 @@
     color: var(--gold-dim);
     text-transform: uppercase;
   }
+
+  /* ── MODAL ── */
+  #videoModal {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    align-items: center; justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(8px);
+  }
+  #videoModal.active { display: flex; }
+  .modal-box {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    border-radius: 18px;
+    padding: 3px;
+    background: linear-gradient(145deg, #f0d080, #7a5c1e, #c9a84c);
+    box-shadow: 0 0 60px rgba(201,168,76,0.5);
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .modal-close {
+    position: absolute;
+    top: -14px; right: -14px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: none;
+    color: #0a0508;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px rgba(201,168,76,0.6);
+    transition: transform 0.2s;
+  }
+  .modal-close:hover { transform: scale(1.15) rotate(90deg); }
+  .modal-video {
+    border-radius: 15px;
+    overflow: hidden;
+    aspect-ratio: 9/16;
+    background: #000;
+  }
+  .modal-video iframe {
+    width: 100%; height: 100%; border: none; display: block;
+  }
+
   @media (max-width: 640px) {
     .videos-grid { flex-direction: column; align-items: center; }
     .video-wrapper { width: min(260px, 80vw); }
+    .modal-box { max-width: min(340px, 90vw); }
   }
 </style>
 </head>
@@ -510,58 +585,59 @@
 <div class="ornament">✦ ✦ ✦</div>
 <section class="videos-section reveal">
   <h2 class="section-title">El Maestro en Acción</h2>
-  <p class="section-sub">Mira cómo trabajo y conoce mi energía antes de tu consulta</p>
+  <p class="section-sub">Toca un video para ver cómo trabajo y conoce mi energía</p>
 
   <div class="videos-grid">
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="openVideo('Bh0o0Gm5H4Y')">
         <div class="video-inner">
-          <iframe
-            src="https://www.youtube.com/embed/Bh0o0Gm5H4Y?autoplay=1&mute=1&loop=1&playlist=Bh0o0Gm5H4Y&controls=0&modestbranding=1&rel=0&playsinline=1"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            loading="lazy"
-            title="Video Maestro Elías 1">
-          </iframe>
+          <img src="https://i.ytimg.com/vi/Bh0o0Gm5H4Y/hqdefault.jpg" alt="Ritual de Amor" loading="lazy">
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
-      <p class="video-label">✦ Separa tu cita ✦</p>
+      <p class="video-label">✦ Ritual de Amor ✦</p>
     </div>
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="openVideo('2hmq6O6EetI')">
         <div class="video-inner">
-          <iframe
-            src="https://www.youtube.com/embed/2hmq6O6EetI?autoplay=1&mute=1&loop=1&playlist=2hmq6O6EetI&controls=0&modestbranding=1&rel=0&playsinline=1"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            loading="lazy"
-            title="Video Maestro Elías 2">
-          </iframe>
+          <img src="https://i.ytimg.com/vi/2hmq6O6EetI/hqdefault.jpg" alt="Lectura del Tarot" loading="lazy">
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
-      <p class="video-label">✦ Separa tu cita ✦</p>
+      <p class="video-label">✦ Lectura del Tarot ✦</p>
     </div>
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="openVideo('B8juVCXiFtM')">
         <div class="video-inner">
-          <iframe
-            src="https://www.youtube.com/embed/B8juVCXiFtM?autoplay=1&mute=1&loop=1&playlist=B8juVCXiFtM&controls=0&modestbranding=1&rel=0&playsinline=1"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            loading="lazy"
-            title="Video Maestro Elías 3">
-          </iframe>
+          <img src="https://i.ytimg.com/vi/B8juVCXiFtM/hqdefault.jpg" alt="Limpia Espiritual" loading="lazy">
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
-      <p class="video-label">✦ Separa tu cita ✦</p>
+      <p class="video-label">✦ Limpia Espiritual ✦</p>
     </div>
 
   </div>
 </section>
 <div class="ornament">✦ ✦ ✦</div>
+
+<!-- ══ MODAL VIDEO ══ -->
+<div id="videoModal" onclick="closeVideo()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeVideo()">✕</button>
+    <div class="modal-video">
+      <iframe id="modalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
 
 <!-- ══ SERVICES ══ -->
 <section class="section reveal">
@@ -738,6 +814,21 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   reveals.forEach(r => io.observe(r));
+
+  // Modal video
+  function openVideo(id) {
+    document.getElementById('modalIframe').src =
+      `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1&modestbranding=1`;
+    document.getElementById('videoModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideo() {
+    document.getElementById('modalIframe').src = '';
+    document.getElementById('videoModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  // Cerrar con tecla Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
 </script>
 </body>
 </html>
