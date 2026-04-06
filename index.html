@@ -455,7 +455,9 @@
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     z-index: 2;
+    transition: opacity 0.3s;
   }
+  .play-overlay.hidden { opacity: 0; pointer-events: none; }
   .play-btn {
     width: 64px; height: 64px;
     border-radius: 50%;
@@ -595,33 +597,42 @@
   <div class="videos-grid">
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="playVideo(this)">
         <div class="video-inner">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="metadata">
             <source src="Diseño sin título (1).mp4" type="video/mp4">
           </video>
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
       <p class="video-label">✦ Ritual de Amor ✦</p>
     </div>
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="playVideo(this)">
         <div class="video-inner">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="metadata">
             <source src="WhatsApp Video 2026-04-05 at 9.59.21 PM.mp4" type="video/mp4">
           </video>
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
       <p class="video-label">✦ Lectura del Tarot ✦</p>
     </div>
 
     <div class="video-wrapper">
-      <div class="video-frame">
+      <div class="video-frame" onclick="playVideo(this)">
         <div class="video-inner">
-          <video autoplay muted loop playsinline>
+          <video muted loop playsinline preload="metadata">
             <source src="WhatsApp Video 2026-04-05 at 9.59.22 PM.mp4" type="video/mp4">
           </video>
+          <div class="play-overlay">
+            <div class="play-btn">▶</div>
+          </div>
         </div>
       </div>
       <p class="video-label">✦ Limpia Espiritual ✦</p>
@@ -816,6 +827,22 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   reveals.forEach(r => io.observe(r));
+
+  // Play video al tocar
+  function playVideo(frame) {
+    const video = frame.querySelector('video');
+    const overlay = frame.querySelector('.play-overlay');
+    video.play();
+    overlay.classList.add('hidden');
+  }
+
+  // Autoplay en PC si es posible
+  document.querySelectorAll('.video-inner video').forEach(v => {
+    v.play().then(() => {
+      const overlay = v.parentElement.querySelector('.play-overlay');
+      if (overlay) overlay.classList.add('hidden');
+    }).catch(() => {}); // En celular falla silenciosamente, queda el botón
+  });
 
   // Modal video
   function openVideo(id) {
