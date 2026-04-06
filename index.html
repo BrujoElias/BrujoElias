@@ -379,6 +379,84 @@
   @media (max-width: 400px) {
     .sticky-cta { font-size: 0.78rem; padding: 0.75rem 1.2rem; }
   }
+
+  /* ── VIDEOS ── */
+  .videos-section {
+    position: relative; z-index: 1;
+    padding: 4rem 1.5rem;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .videos-grid {
+    display: flex;
+    gap: 1.4rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .video-wrapper {
+    position: relative;
+    width: 260px;
+    flex-shrink: 0;
+  }
+  /* Marco decorativo dorado */
+  .video-frame {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    /* Borde dorado con gradiente */
+    padding: 3px;
+    background: linear-gradient(145deg, #f0d080, #7a5c1e, #c9a84c, #f0d080);
+    box-shadow:
+      0 0 30px rgba(201,168,76,0.4),
+      0 0 60px rgba(201,168,76,0.15),
+      inset 0 0 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .video-frame:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow:
+      0 0 50px rgba(201,168,76,0.6),
+      0 0 100px rgba(201,168,76,0.25);
+  }
+  /* Esquinas decorativas */
+  .video-frame::before,
+  .video-frame::after {
+    content: '✦';
+    position: absolute;
+    font-size: 1rem;
+    color: var(--gold);
+    z-index: 3;
+    line-height: 1;
+    filter: drop-shadow(0 0 6px rgba(201,168,76,0.8));
+  }
+  .video-frame::before { top: 8px; left: 10px; }
+  .video-frame::after  { bottom: 8px; right: 10px; }
+  .video-inner {
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 9/16;
+    background: #0a0508;
+  }
+  .video-inner iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .video-label {
+    text-align: center;
+    margin-top: 0.9rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+  }
+  @media (max-width: 640px) {
+    .videos-grid { flex-direction: column; align-items: center; }
+    .video-wrapper { width: min(260px, 80vw); }
+  }
 </style>
 </head>
 <body>
@@ -427,6 +505,63 @@
     </a>
   </div>
 </section>
+
+<!-- ══ VIDEOS ══ -->
+<div class="ornament">✦ ✦ ✦</div>
+<section class="videos-section reveal">
+  <h2 class="section-title">El Maestro en Acción</h2>
+  <p class="section-sub">Mira cómo trabajo y conoce mi energía antes de tu consulta</p>
+
+  <div class="videos-grid">
+
+    <div class="video-wrapper">
+      <div class="video-frame">
+        <div class="video-inner">
+          <iframe
+            src="https://www.youtube.com/embed/Bh0o0Gm5H4Y?autoplay=1&mute=1&loop=1&playlist=Bh0o0Gm5H4Y&controls=0&modestbranding=1&rel=0&playsinline=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            loading="lazy"
+            title="Video Maestro Elías 1">
+          </iframe>
+        </div>
+      </div>
+      <p class="video-label">✦ Separa tu cita ✦</p>
+    </div>
+
+    <div class="video-wrapper">
+      <div class="video-frame">
+        <div class="video-inner">
+          <iframe
+            src="https://www.youtube.com/embed/2hmq6O6EetI?autoplay=1&mute=1&loop=1&playlist=2hmq6O6EetI&controls=0&modestbranding=1&rel=0&playsinline=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            loading="lazy"
+            title="Video Maestro Elías 2">
+          </iframe>
+        </div>
+      </div>
+      <p class="video-label">✦ Separa tu cita ✦</p>
+    </div>
+
+    <div class="video-wrapper">
+      <div class="video-frame">
+        <div class="video-inner">
+          <iframe
+            src="https://www.youtube.com/embed/B8juVCXiFtM?autoplay=1&mute=1&loop=1&playlist=B8juVCXiFtM&controls=0&modestbranding=1&rel=0&playsinline=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            loading="lazy"
+            title="Video Maestro Elías 3">
+          </iframe>
+        </div>
+      </div>
+      <p class="video-label">✦ Separa tu cita ✦</p>
+    </div>
+
+  </div>
+</section>
+<div class="ornament">✦ ✦ ✦</div>
 
 <!-- ══ SERVICES ══ -->
 <section class="section reveal">
